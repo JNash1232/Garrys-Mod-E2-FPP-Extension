@@ -27,7 +27,7 @@ end
 
 --- gravgun share
 e2function void entity:shareGravgun(number active)
-    if not IsValid(this) or not this:IsPlayer() then
+    if not IsValid(this) then
 		return nil
 	end
 	
@@ -41,7 +41,7 @@ end
 
 --- toolgun share
 e2function void entity:shareToolgun(number active)
-    if not IsValid(this) or not this:IsPlayer() then
+    if not IsValid(this) then
 		return nil
 	end
 
@@ -55,7 +55,7 @@ end
 
 --- use share
 e2function void entity:shareUse(number active)
-    if not IsValid(this) or not this:IsPlayer() then
+    if not IsValid(this) then
 		return nil
 	end
 
@@ -69,7 +69,7 @@ end
 
 --- entity damage share
 e2function void entity:shareDamage(number active)
-    if not IsValid(this) or not this:IsPlayer() then
+    if not IsValid(this) then
 		return nil
 	end
 
