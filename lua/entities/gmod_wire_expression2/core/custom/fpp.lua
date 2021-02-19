@@ -22,11 +22,10 @@ local function FPPShare(ent, ply, type, active)
 	
 	ent[type] = active
 	FPP.recalculateCanTouch(player.GetAll(), {ent})
-
 end
 
 --- physgun share
-e2function void entity:shareProp(number active, entity target)
+e2function void entity:shareProp(entity target, number active)
     if not IsValid(this) or not IsValid(target) or not target:IsPlayer() then
 		return nil
 	end
@@ -57,7 +56,6 @@ e2function void entity:shareProp(number active, entity target)
 	end
 	
     FPP.recalculateCanTouch(player.GetAll(), {this})
-
 end
 
 --- physgun share
