@@ -8,7 +8,7 @@
 include("fpp/client/buddies.lua")
 
 --- Register this extension, give it a name and desc and disabled by default
-E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list.")
+E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list and share individual items.")
 
 local function FPPShare(ent, ply, type, active)
 	if not IsValid(ent) or not IsValid(ply) then
