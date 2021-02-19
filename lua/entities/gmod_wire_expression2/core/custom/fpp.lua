@@ -10,6 +10,9 @@ include("fpp/client/buddies.lua")
 --- Register this extension, give it a name and desc and disabled by default
 E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list and share individual items.")
 
+--- sets the E2 Cost
+__e2setcost(50)
+
 local function FPPShare(ent, type, active)
     if not IsValid(ent) then
         return
@@ -24,7 +27,7 @@ local function FPPShare(ent, type, active)
     FPP.recalculateCanTouch(player.GetAll(), {ent})
 end
 
---[[ None of this works, because why add AllowedPlayers when you don't check it?
+--[[ None of this works, because why add AllowedPlayers when you don't check it?	---- Just to piss you off? That to me sounds like the best reason.
 --- physgun share
 e2function void entity:share(entity target, number active)
     if not IsValid(this) or not IsValid(target) or not target:IsPlayer() then
