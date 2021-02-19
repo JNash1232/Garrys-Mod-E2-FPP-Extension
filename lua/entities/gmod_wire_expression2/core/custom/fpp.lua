@@ -64,6 +64,7 @@ e2function void entity:share(entity target, number active)
 end
 --]]
 
+
 --- physgun share
 e2function void entity:sharePhysgun(number active)
     if not IsValid(this) then
@@ -128,4 +129,16 @@ e2function void entity:shareDamage(number active)
     else 
         FPPShare(this, "ShareEntityDamage1", (active >= 1))
     end
+end
+
+--- entity share all
+e2function void entity:share(number active)
+    if not IsValid(this) then
+        return nil
+    end
+	this:sharePhysgun(active)
+	this:shareGravgun(active)
+	this:shareToolgun(active)
+	this:shareUse(active)
+	this:shareDamage(active)
 end
