@@ -12,38 +12,31 @@ E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to
 
 --- physgun share
 e2function void entity:sharePhysgun(number active)
-    if not IsValid(this) or not this:IsPlayer() then
+    if not IsValid(this) then
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", active >= 1 and 1 or 0)
+	if this:IsPlayer() then
+		FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", active >= 1 and 1 or 0)
+	else 
+		this.SharePhysgun1 = (active >= 1)
+		FPP.recalculateCanTouch(player.GetAll(), {this})
+	end
 end
+
 
 --- gravgun share
 e2function void entity:shareGravgun(number active)
     if not IsValid(this) or not this:IsPlayer() then
 		return nil
 	end
-
-    FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", active >= 1 and 1 or 0)
-end
-
---- use share
-e2function void entity:shareUse(number active)
-    if not IsValid(this) or not this:IsPlayer() then
-		return nil
+	
+	if this:IsPlayer() then
+		FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", active >= 1 and 1 or 0)
+	else 
+		this.ShareGravgun1 = (active >= 1)
+		FPP.recalculateCanTouch(player.GetAll(), {this})
 	end
-
-    FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active >= 1 and 1 or 0)
-end
-
---- entity damage share
-e2function void entity:shareDamage(number active)
-    if not IsValid(this) or not this:IsPlayer() then
-		return nil
-	end
-
-    FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active >= 1 and 1 or 0)
 end
 
 --- toolgun share
@@ -52,5 +45,38 @@ e2function void entity:shareToolgun(number active)
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active >= 1 and 1 or 0)
+	if this:IsPlayer() then
+		FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active >= 1 and 1 or 0)
+	else 
+		this.ShareToolgun1 = (active >= 1)
+		FPP.recalculateCanTouch(player.GetAll(), {this})
+	end
+end
+
+--- use share
+e2function void entity:shareUse(number active)
+    if not IsValid(this) or not this:IsPlayer() then
+		return nil
+	end
+
+	if this:IsPlayer() then
+		FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active >= 1 and 1 or 0)
+	else 
+		this.SharePlayerUse1 = (active >= 1)
+		FPP.recalculateCanTouch(player.GetAll(), {this})
+	end
+end
+
+--- entity damage share
+e2function void entity:shareDamage(number active)
+    if not IsValid(this) or not this:IsPlayer() then
+		return nil
+	end
+
+	if this:IsPlayer() then
+		FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active >= 1 and 1 or 0)
+	else 
+		this.ShareEntityDamage1 = (active >= 1)
+		FPP.recalculateCanTouch(player.GetAll(), {this})
+	end
 end
