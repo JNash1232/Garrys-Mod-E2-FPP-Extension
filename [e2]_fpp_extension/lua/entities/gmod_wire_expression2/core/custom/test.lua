@@ -34,6 +34,7 @@ e2function void entity:damageShare(number active)
     FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active)
 end
 
+--- toolgun share
 e2function void entity:toolgunShare(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active)
