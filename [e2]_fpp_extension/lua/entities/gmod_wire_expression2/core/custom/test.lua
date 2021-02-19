@@ -10,9 +10,10 @@ e2function string ohCock()
 end
 
 --- this is a test to see if this works as a description
-e2function void entity:physgunShare(number active)
-    if not IsValid(this) and not this:IsPlayer() then return nil end
-    this.SharePhysgun1 = (active == 1)
+e2function string entity:physgunShare(number active)
+    this.SharePhysgun1 = 1
+    recalculateCanTouch(player.GetAll(), {this})
+    return "testytest2"
 end
 
 e2function void entity:gravgunShare(number active)
