@@ -16,7 +16,7 @@ e2function void entity:sharePhysgun(number active)
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", (active == 1))
+    FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", active >= 1 and 1 or 0)
 end
 
 --- gravgun share
@@ -25,7 +25,7 @@ e2function void entity:shareGravgun(number active)
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", (active == 1))
+    FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", active >= 1 and 1 or 0)
 end
 
 --- use share
@@ -34,7 +34,7 @@ e2function void entity:shareUse(number active)
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active)
+    FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active >= 1 and 1 or 0)
 end
 
 --- entity damage share
@@ -43,7 +43,7 @@ e2function void entity:shareDamage(number active)
 		return nil
 	end
 
-    FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active)
+    FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active >= 1 and 1 or 0)
 end
 
 --- toolgun share
@@ -51,6 +51,6 @@ e2function void entity:shareToolgun(number active)
     if not IsValid(this) or not this:IsPlayer() then
 		return nil
 	end
-	
-    FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active)
+
+    FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active >= 1 and 1 or 0)
 end
