@@ -11,31 +11,31 @@ include("fpp/client/buddies.lua")
 E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list.")
 
 --- physgun share
-e2function void entity:physgunShare(number active)
+e2function void entity:sharePhysgun(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", active)
 end
 
 --- gravgun share
-e2function void entity:gravgunShare(number active)
+e2function void entity:shareGravgun(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", active)
 end
 
 --- use share
-e2function void entity:useShare(number active)
+e2function void entity:shareUse(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active)
 end
 
 --- entity damage share
-e2function void entity:damageShare(number active)
+e2function void entity:shareDamage(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active)
 end
 
 --- toolgun share
-e2function void entity:toolgunShare(number active)
+e2function void entity:shareToolgun(number active)
     if not IsValid(this) or not this:IsPlayer() then return nil end
     FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active)
 end
