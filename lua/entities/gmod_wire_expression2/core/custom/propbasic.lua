@@ -16,8 +16,11 @@ e2function void entity:propFreeze(number frozen)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
-
-    this:GetPhysicsObject():EnableMotion(frozen <= 0)
+    
+    local canTool = this:CPPICanTool(self.player, "toolgun")
+    if canTool then
+        this:GetPhysicsObject():EnableMotion(frozen <= 0)
+    end
 end
 
 --- sets gravity
@@ -25,8 +28,10 @@ e2function void entity:setGravity(number active)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
-
-    this:GetPhysicsObject():EnableGravity(active >= 1)
+    local canTool = this:CPPICanTool(self.player, "toolgun")
+    if canTool then
+        this:GetPhysicsObject():EnableGravity(active >= 1)
+    end
 end
 
 --- propsolid sets the solidity of the prop 
@@ -34,7 +39,9 @@ e2function void entity:propNotSolid(number solid)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
-    
-    this:SetSolid(solid >= 1 and 6 or 0)
+    local canTool = this:CPPICanTool(self.player, "toolgun")
+    if canTool then
+        this:SetSolid(solid >= 1 and 6 or 0)
+    end
 end
 
