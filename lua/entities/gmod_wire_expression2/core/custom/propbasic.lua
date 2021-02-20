@@ -20,13 +20,13 @@ e2function void entity:propFreeze(number frozen)
     this:GetPhysicsObject():EnableMotion(frozen <= 0)
 end
 
---- check to see if a prop is frozen
-e2function number entity:propIsFrozen()
+--- sets gravity
+e2function void entity:setGravity(number active)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
 
-    return this:IsFrozen()
+    this:GetPhysicsObject():EnableGravity(active >= 1)
 end
 
 --- propsolid sets the solidity of the prop 
@@ -36,15 +36,5 @@ e2function void entity:propNotSolid(number solid)
     end
     
     this:SetSolid(solid >= 1 and 6 or 0)
-end
-
---- gets the solidity of the prop
-e2function number entity:propIsSolid()
-    if not IsValid(this) or this:IsPlayer() then
-        return nil
-    end
-    
-    local solid = this:GetSolid() and 1 or 0
-    return solid
 end
 
