@@ -28,6 +28,7 @@ e2function void entity:setGravity(number active)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
+    
     local canTool = this:CPPICanTool(self.player, "toolgun")
     if canTool then
         this:GetPhysicsObject():EnableGravity(active >= 1)
@@ -39,9 +40,10 @@ e2function void entity:propNotSolid(number solid)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
+
     local canTool = this:CPPICanTool(self.player, "toolgun")
     if canTool then
-        this:SetSolid(solid >= 1 and 6 or 0)
+        this:SetSolid(solid >= 1 and 0 or 6)
     end
 end
 
