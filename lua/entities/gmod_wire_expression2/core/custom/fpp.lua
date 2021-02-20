@@ -27,6 +27,25 @@ local function FPPShare(ent, type, active)
     FPP.recalculateCanTouch(player.GetAll(), {ent})
 end
 
+local function FPPBuddyCheck(otherPlayer, type)
+    if not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
+		print("not valid")
+        return false
+    end
+	
+	local steamID = self.owner:SteamID()
+
+	if not table.HasValue(otherPlayer.buddies, steamID) then
+		return false
+	end
+    
+    if table.HasValue(otherPlayer.buddies[steamId], type) then
+		return otherPlayer.buddies[steamId][type]
+	else
+		return false
+	end
+end
+
 --[[ None of this works, because why add AllowedPlayers when you don't check it?	---- Just to piss you off? That to me sounds like the best reason.
 --- physgun share
 e2function void entity:share(entity target, number active)
@@ -78,6 +97,20 @@ e2function void entity:sharePhysgun(number active)
     end
 end
 
+--- physgun check
+e2function number entity:canPhysgun()
+    if not IsValid(this) then
+        return 0
+    end
+
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(this, "physgun") and 1 or 0
+	else
+		return this:CPPICanPhysgun(self.owner) and 1 or 0
+	end
+end
+
 
 --- gravgun share
 e2function void entity:shareGravgun(number active)
@@ -90,6 +123,20 @@ e2function void entity:shareGravgun(number active)
     else 
         FPPShare(this, "ShareGravgun1", (active >= 1))
     end
+end
+
+--- gravgun check
+e2function number entity:canGravgun()
+    if not IsValid(this) then
+        return 0
+    end
+
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(this, "gravgun") and 1 or 0
+	else
+		return this:CPPICanGravgun(self.owner) and 1 or 0
+	end
 end
 
 --- toolgun share
@@ -105,6 +152,20 @@ e2function void entity:shareToolgun(number active)
     end
 end
 
+--- toolgun check
+e2function number entity:canToolgun()
+    if not IsValid(this) then
+        return 0
+    end
+
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(this, "toolgun") and 1 or 0
+	else
+		return this:CPPICanToolgun(self.owner) and 1 or 0
+	end
+end
+
 --- use share
 e2function void entity:shareUse(number active)
     if not IsValid(this) then
@@ -118,6 +179,20 @@ e2function void entity:shareUse(number active)
     end
 end
 
+--- use check
+e2function number entity:canUse()
+    if not IsValid(this) then
+        return 0
+    end
+
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(this, "playeruse") and 1 or 0
+	else
+		return this:CPPICanUse(self.owner) and 1 or 0
+	end
+end
+
 --- entity damage share
 e2function void entity:shareDamage(number active)
     if not IsValid(this) then
@@ -129,6 +204,20 @@ e2function void entity:shareDamage(number active)
     else 
         FPPShare(this, "ShareEntityDamage1", (active >= 1))
     end
+end
+
+--- use check
+e2function number entity:canDamage()
+    if not IsValid(this) then
+        return 0
+    end
+
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(this, "entitydamage") and 1 or 0
+	else
+		return this:CPPICanDamage(self.owner) and 1 or 0
+	end
 end
 
 --- entity share all
