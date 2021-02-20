@@ -11,7 +11,7 @@ include("fpp/client/buddies.lua")
 E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list and share individual items.")
 
 --- sets the E2 Cost
-__e2setcost(50)
+__e2setcost(100)
 
 local function FPPShare(ent, type, active)
     if not IsValid(ent) then
