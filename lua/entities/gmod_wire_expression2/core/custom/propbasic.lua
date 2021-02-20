@@ -59,3 +59,14 @@ e2function void entity:drawShadow(number draw)
     end
 end
 
+--- enableDrag ... it enables/disbales drag
+e2function void entity:enableDrag(number active)
+    if not IsValid(this) or this:IsPlayer() then
+        return nil
+    end
+
+    local canTool = this:CPPICanTool(self.player, "toolgun")
+    if canTool then
+        this:GetPhysicsObject():EnableDrag(active >= 1)
+    end
+end
