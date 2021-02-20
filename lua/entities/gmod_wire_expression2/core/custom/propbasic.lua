@@ -47,8 +47,8 @@ e2function void entity:propNotSolid(number solid)
     end
 end
 
---- drawShadows sets if E should draw shadows
-e2function void entity:drawShadows(number draw)
+--- drawShadow sets if E should draw shadows
+e2function void entity:drawShadow(number draw)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
