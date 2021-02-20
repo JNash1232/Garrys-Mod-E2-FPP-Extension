@@ -24,7 +24,7 @@ e2function void entity:propFreeze(number frozen)
 end
 
 --- sets gravity
-e2function void entity:setGravity(number active)
+e2function void entity:enableGravity(number active)
     if not IsValid(this) or this:IsPlayer() then
         return nil
     end
@@ -47,3 +47,14 @@ e2function void entity:propNotSolid(number solid)
     end
 end
 
+--- drawShadows sets if E should draw shadows
+e2function void entity:drawShadows(number draw)
+    if not IsValid(this) or this:IsPlayer() then
+        return nil
+    end
+
+    local canTool = this:CPPICanTool(self.player, "toolgun")
+    if canTool then
+        this:DrawShadow(draw >= 1)
+    end
+end
