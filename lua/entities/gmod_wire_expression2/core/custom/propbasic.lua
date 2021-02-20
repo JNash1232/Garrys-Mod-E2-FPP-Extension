@@ -17,7 +17,7 @@ e2function void entity:propFreeze(number frozen)
         return nil
     end
     
-    local canTool = this:CPPICanTool(self.player, "toolgun")
+    local canTool = this:CPPICanPhysgun(self.player)
     if canTool then
         this:GetPhysicsObject():EnableMotion(frozen <= 0)
     end
@@ -58,3 +58,4 @@ e2function void entity:drawShadow(number draw)
         this:DrawShadow(draw >= 1)
     end
 end
+
