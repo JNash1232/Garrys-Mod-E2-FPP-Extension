@@ -33,7 +33,7 @@ local function FPPBuddyCheck(otherPlayer, type)
         return false
     end
 	
-	local steamID = self.owner:SteamID()
+	local steamID = self.player:SteamID()
 
 	if not table.HasValue(otherPlayer.buddies, steamID) then
 		return false
@@ -107,7 +107,7 @@ e2function number entity:canPhysgun()
     if this:IsPlayer() then
 		return FPPBuddyCheck(this, "physgun") and 1 or 0
 	else
-		return this:CPPICanPhysgun(self.owner) and 1 or 0
+		return this:CPPICanPhysgun(self.player) and 1 or 0
 	end
 end
 
@@ -135,7 +135,7 @@ e2function number entity:canGravgun()
     if this:IsPlayer() then
 		return FPPBuddyCheck(this, "gravgun") and 1 or 0
 	else
-		return this:CPPICanGravgun(self.owner) and 1 or 0
+		return this:CPPICanGravgun(self.player) and 1 or 0
 	end
 end
 
@@ -162,7 +162,7 @@ e2function number entity:canToolgun()
     if this:IsPlayer() then
 		return FPPBuddyCheck(this, "toolgun") and 1 or 0
 	else
-		return this:CPPICanToolgun(self.owner) and 1 or 0
+		return this:CPPICanToolgun(self.player) and 1 or 0
 	end
 end
 
@@ -189,7 +189,7 @@ e2function number entity:canUse()
     if this:IsPlayer() then
 		return FPPBuddyCheck(this, "playeruse") and 1 or 0
 	else
-		return this:CPPICanUse(self.owner) and 1 or 0
+		return this:CPPICanUse(self.player) and 1 or 0
 	end
 end
 
@@ -216,7 +216,7 @@ e2function number entity:canDamage()
     if this:IsPlayer() then
 		return FPPBuddyCheck(this, "entitydamage") and 1 or 0
 	else
-		return this:CPPICanDamage(self.owner) and 1 or 0
+		return this:CPPICanDamage(self.player) and 1 or 0
 	end
 end
 
