@@ -28,16 +28,19 @@ local function FPPShare(ent, type, active)
 end
 
 local function FPPBuddyCheck(ply, otherPlayer, type)
-    if not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
+    if not IsValid(otherPlayer) or not otherPlayer:IsPlayer() or not ply:IsPlayer() then
 		print("not valid")
         return false
     end
 	
 	local steamID = ply:SteamID()
     print(steamID)
-    
+    local x = ply:CPPIGetFriends()
+    print(x)
+
+
     --[[
-	if not table.HasValue(otherPlayer.buddies, steamID) then
+	if not table.HasValue(otherPlayer.Buddies, steamID) then
 		return false
 	end
     
@@ -106,12 +109,7 @@ e2function number entity:canPhysgun()
         return 0
     end
 
-	
-    if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "physgun") and 1 or 0
-	else
-		return this:CPPICanPhysgun(self.player) and 1 or 0
-	end
+	return this:CPPICanPhysgun(self.player) and 1 or 0
 end
 
 
@@ -134,12 +132,7 @@ e2function number entity:canGravgun()
         return 0
     end
 
-	
-    if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "gravgun") and 1 or 0
-	else
-		return this:CPPICanGravgun(self.player) and 1 or 0
-	end
+	return this:CPPICanGravgun(self.player) and 1 or 0
 end
 
 --- toolgun share
@@ -161,12 +154,7 @@ e2function number entity:canToolgun()
         return 0
     end
 
-	
-    if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "toolgun") and 1 or 0
-	else
-		return this:CPPICanToolgun(self.player) and 1 or 0
-	end
+    return this:CPPICanToolgun(self.player) and 1 or 0
 end
 
 --- use share
@@ -188,12 +176,7 @@ e2function number entity:canUse()
         return 0
     end
 
-	
-    if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "playeruse") and 1 or 0
-	else
-		return this:CPPICanUse(self.player) and 1 or 0
-	end
+	return this:CPPICanUse(self.player) and 1 or 0
 end
 
 --- entity damage share
@@ -209,18 +192,13 @@ e2function void entity:shareDamage(number active)
     end
 end
 
---- use check
+--- damage check
 e2function number entity:canDamage()
     if not IsValid(this) then
         return 0
     end
 
-	
-    if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "entitydamage") and 1 or 0
-	else
-		return this:CPPICanDamage(self.player) and 1 or 0
-	end
+    return this:CPPICanDamage(self.player) and 1 or 0
 end
 
 --- entity share all
