@@ -13,82 +13,92 @@ E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to
 --- sets the E2 Cost
 __e2setcost(100)
 
-local function FPPShare(ent, type, active)
+local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entitydamage)
     if not IsValid(ent) then
         return
     end
+
+	if ent:IsPlayer() then
+
+		if physgun == 0 and gravgun == 0 and toolgun == 0 and playeruse == 0 and entitydamage == 0 then
+			FPP.SaveBuddy(ent:SteamID(), "Remove", "remove")
+		else
+			if physgun ~= nil then
+				FPP.SaveBuddy(ent:SteamID(), "Physgun", "physgun", physgun >= 1 and 1 or 0)
+			end
+
+			if gravgun ~= nil then
+				FPP.SaveBuddy(ent:SteamID(), "Gravgun", "gravgun", gravgun >= 1 and 1 or 0)
+			end
+
+			if toolgun ~= nil then
+				FPP.SaveBuddy(ent:SteamID(), "Toolgun", "toolgun", toolgun >= 1 and 1 or 0)
+			end
+
+			if playeruse ~= nil then
+				FPP.SaveBuddy(ent:SteamID(), "Use", "playeruse", playeruse >= 1 and 1 or 0)
+			end
+			
+			if entitydamage ~= nil then
+				FPP.SaveBuddy(ent:SteamID(), "Entity damage", "entitydamage", entitydamage >= 1 and 1 or 0)
+			end
+		end
+	else
     
-    if ent:CPPIGetOwner() ~= self.player then
-        FPP.Notify(self.player, "You do not have the right to share this entity.", false)
-        return
-    end
-    
-    ent[type] = active
-    FPP.recalculateCanTouch(player.GetAll(), {ent})
+		if ent:CPPIGetOwner() ~= ply then
+			FPP.Notify(ply, "You do not have the right to share this entity.", false)
+			return
+		end
+		
+		if physgun ~= nil then
+        	ent["SharePhysgun1"] = (physgun >= 1)
+		end
+
+		if gravgun ~= nil then
+			ent["ShareGravgun1"] = (gravgun >= 1)
+		end
+
+		if toolgun ~= nil then
+			ent["ShareToolgun1"] = (toolgun >= 1)
+		end
+		
+		if playeruse ~= nil then
+			ent["SharePlayerUse1"] = (playeruse >= 1)
+		end
+		
+		if entitydamage ~= nil then
+			ent["ShareEntityDamage1"] = (entitydamage >= 1)
+		end		
+
+		FPP.recalculateCanTouch(player.GetAll(), {ent})
+	end
 end
 
 local function FPPBuddyCheck(ply, otherPlayer, type)
-    if not IsValid(otherPlayer) or not otherPlayer:IsPlayer() or not ply:IsPlayer() then
-		print("not valid")
+    if not IsValid(ply) or not ply:IsPlayer() 
+		or not IsValid(otherPlayer) or not otherPlayer:IsPlayer()then
         return false
     end
+
+	if ply == otherPlayer then
+		return true
+	end
+
+	if not otherPlayer.Buddies then
+		return false
+	end
 	
 	local steamID = ply:SteamID()
-    print(steamID)
-    local x = ply:CPPIGetFriends()
-    print(x)
-
-
-    --[[
 	if not table.HasValue(otherPlayer.Buddies, steamID) then
 		return false
 	end
-    
+
     if table.HasValue(otherPlayer.buddies[steamId], type) then
 		return otherPlayer.buddies[steamId][type]
-	else
-		return false
 	end
-    ]]
+	
+	return false
 end
-
---[[ None of this works, because why add AllowedPlayers when you don't check it?	---- Just to piss you off? That to me sounds like the best reason.
---- physgun share
-e2function void entity:share(entity target, number active)
-    if not IsValid(this) or not IsValid(target) or not target:IsPlayer() then
-        return nil
-    end
-    
-    local ply = self.player
-
-    if this:CPPIGetOwner() ~= ply then
-        FPP.Notify(ply, "You do not have the right to share this entity.", false)
-        return
-    end
-
-    local toggle = active >= 1
-    -- Make the table if it isn't there
-    if not this.AllowedPlayers and toggle then
-        this.AllowedPlayers = {target}
-        FPP.Notify(target, ply:Nick() .. " shared an entity with you!", true)
-    else
-        if toggle and not table.HasValue(this.AllowedPlayers, target) then
-            table.insert(this.AllowedPlayers, target)
-            FPP.Notify(target, ply:Nick() .. " shared an entity with you!", true)
-        elseif not toggle then
-            for k, v in pairs(this.AllowedPlayers) do
-                if v == target then
-                    table.remove(this.AllowedPlayers, k)
-                    FPP.Notify(target, ply:Nick() .. " unshared an entity with you!", false)
-                end
-            end
-        end
-    end
-    
-    FPP.recalculateCanTouch({target}, {this})
-end
---]]
-
 
 --- physgun share
 e2function void entity:sharePhysgun(number active)
@@ -96,11 +106,7 @@ e2function void entity:sharePhysgun(number active)
         return nil
     end
 
-    if this:IsPlayer() then
-        FPP.SaveBuddy(this:SteamID(), "Physgun", "physgun", active >= 1 and 1 or 0)
-    else 
-        FPPShare(this, "SharePhysgun1", (active >= 1))
-    end
+    FPPShare(self.player, this, active, nil, nil, nil, nil)
 end
 
 --- physgun check
@@ -111,7 +117,7 @@ e2function number entity:canPhysgun()
 
 	
     if this:IsPlayer() then
-		return this:CPPICanPhysgun(self.player) and 1 or 0
+		return FPPBuddyCheck(self.player, this, "physgun") and 1 or 0
 	else
 		return this:CPPICanPhysgun(self.player) and 1 or 0
 	end
@@ -124,11 +130,7 @@ e2function void entity:shareGravgun(number active)
         return nil
     end
     
-    if this:IsPlayer() then
-        FPP.SaveBuddy(this:SteamID(), "Gravgun", "gravgun", active >= 1 and 1 or 0)
-    else 
-        FPPShare(this, "ShareGravgun1", (active >= 1))
-    end
+	FPPShare(self.player, this, nil, active, nil, nil, nil)
 end
 
 --- gravgun check
@@ -151,11 +153,7 @@ e2function void entity:shareToolgun(number active)
         return nil
     end
 
-    if this:IsPlayer() then
-        FPP.SaveBuddy(this:SteamID(), "Toolgun", "toolgun", active >= 1 and 1 or 0)
-    else 
-        FPPShare(this, "ShareToolgun1", (active >= 1))
-    end
+	FPPShare(self.player, this, nil, nil, active, nil, nil)
 end
 
 --- toolgun check
@@ -177,12 +175,8 @@ e2function void entity:shareUse(number active)
     if not IsValid(this) then
         return nil
     end
-
-    if this:IsPlayer() then
-        FPP.SaveBuddy(this:SteamID(), "Use", "playeruse", active >= 1 and 1 or 0)
-    else 
-        FPPShare(this, "SharePlayerUse1", (active >= 1))
-    end
+    
+	FPPShare(self.player, this, nil, nil, nil, active, nil)
 end
 
 --- use check
@@ -205,11 +199,7 @@ e2function void entity:shareDamage(number active)
         return nil
     end
 
-    if this:IsPlayer() then
-        FPP.SaveBuddy(this:SteamID(), "Entity damage", "entitydamage", active >= 1 and 1 or 0)
-    else 
-        FPPShare(this, "ShareEntityDamage1", (active >= 1))
-    end
+	FPPShare(self.player, this, nil, nil, nil, nil, active)
 end
 
 --- use check
@@ -231,9 +221,6 @@ e2function void entity:share(number active)
     if not IsValid(this) then
         return nil
     end
-	this:sharePhysgun(active)
-	this:shareGravgun(active)
-	this:shareToolgun(active)
-	this:shareUse(active)
-	this:shareDamage(active)
+
+	FPPShare(self.player, this, active, active, active, active, active)
 end
