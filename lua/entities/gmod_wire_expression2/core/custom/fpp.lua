@@ -1,8 +1,6 @@
 --[[
-    Lets see if this works
     -- Jason1232 & KieranFYI
 ]]
-
 
 --- Include the fpp buddies library needed to actually add buddies
 include("fpp/client/buddies.lua")
@@ -14,7 +12,8 @@ E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to
 __e2setcost(100)
 
 local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entitydamage)
-    if not IsValid(ent) then
+    if not IsValid(ply) or not ply:IsPlayer()
+		or not IsValid(ent) then
         return
     end
 
