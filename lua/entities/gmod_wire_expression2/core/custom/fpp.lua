@@ -75,7 +75,7 @@ end
 
 local function FPPBuddyCheck(ply, otherPlayer, type)
     if not IsValid(ply) or not ply:IsPlayer() 
-		or not IsValid(otherPlayer) or not otherPlayer:IsPlayer()then
+		or not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
         return false
     end
 
@@ -86,14 +86,13 @@ local function FPPBuddyCheck(ply, otherPlayer, type)
 	if not otherPlayer.Buddies then
 		return false
 	end
-	
-	local steamID = ply:SteamID()
-	if not table.HasValue(otherPlayer.Buddies, steamID) then
+
+	if not otherPlayer.Buddies[ply] then
 		return false
 	end
 
-    if table.HasValue(otherPlayer.buddies[steamId], type) then
-		return otherPlayer.buddies[steamId][type]
+	if otherPlayer.Buddies[ply][type] then
+		return otherPlayer.Buddies[ply][type]
 	end
 	
 	return false
@@ -116,7 +115,7 @@ e2function number entity:canPhysgun()
 
 	
     if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "physgun") and 1 or 0
+		return FPPBuddyCheck(self.player, this, "Physgun") and 1 or 0
 	else
 		return this:CPPICanPhysgun(self.player) and 1 or 0
 	end
@@ -140,7 +139,7 @@ e2function number entity:canGravgun()
 
 	
     if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "gravgun") and 1 or 0
+		return FPPBuddyCheck(self.player, this, "Gravgun") and 1 or 0
 	else
 		return this:CPPICanGravgun(self.player) and 1 or 0
 	end
@@ -163,7 +162,7 @@ e2function number entity:canToolgun()
 
 	
     if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "toolgun") and 1 or 0
+		return FPPBuddyCheck(self.player, this, "Toolgun") and 1 or 0
 	else
 		return this:CPPICanTool(self.player, "toolgun") and 1 or 0
 	end
@@ -186,7 +185,7 @@ e2function number entity:canUse()
 
 	
     if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "playeruse") and 1 or 0
+		return FPPBuddyCheck(self.player, this, "PlayerUse") and 1 or 0
 	else
 		return this:CPPICanUse(self.player) and 1 or 0
 	end
@@ -209,7 +208,7 @@ e2function number entity:canDamage()
 
 	
     if this:IsPlayer() then
-		return FPPBuddyCheck(self.player, this, "entitydamage") and 1 or 0
+		return FPPBuddyCheck(self.player, this, "EntityDamage") and 1 or 0
 	else
 		return this:CPPICanDamage(self.player) and 1 or 0
 	end
