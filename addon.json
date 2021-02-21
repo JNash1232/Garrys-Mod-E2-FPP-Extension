@@ -1,0 +1,8 @@
+{
+    "title": "[E2] Falco's Prop Protection Extension",
+    "type": "ServerContent",
+    "default_changelog": "All changes can be found on https://github.com/JasonQ1232/Garrys-Mod-E2-FPP-Extension",
+    "ignore": [
+        "*.git*"
+    ]
+}
