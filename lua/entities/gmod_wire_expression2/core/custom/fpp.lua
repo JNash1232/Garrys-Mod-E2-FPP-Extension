@@ -109,7 +109,12 @@ e2function number entity:canPhysgun()
         return 0
     end
 
-	return this:CPPICanPhysgun(self.player) and 1 or 0
+	
+    if this:IsPlayer() then
+		return this:CPPICanPhysgun(self.player) and 1 or 0
+	else
+		return this:CPPICanPhysgun(self.player) and 1 or 0
+	end
 end
 
 
@@ -132,7 +137,12 @@ e2function number entity:canGravgun()
         return 0
     end
 
-	return this:CPPICanGravgun(self.player) and 1 or 0
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(self.player, this, "gravgun") and 1 or 0
+	else
+		return this:CPPICanGravgun(self.player) and 1 or 0
+	end
 end
 
 --- toolgun share
@@ -154,7 +164,12 @@ e2function number entity:canToolgun()
         return 0
     end
 
-    return this:CPPICanToolgun(self.player) and 1 or 0
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(self.player, this, "toolgun") and 1 or 0
+	else
+		return this:CPPICanTool(self.player, "toolgun") and 1 or 0
+	end
 end
 
 --- use share
@@ -176,7 +191,12 @@ e2function number entity:canUse()
         return 0
     end
 
-	return this:CPPICanUse(self.player) and 1 or 0
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(self.player, this, "playeruse") and 1 or 0
+	else
+		return this:CPPICanUse(self.player) and 1 or 0
+	end
 end
 
 --- entity damage share
@@ -192,13 +212,18 @@ e2function void entity:shareDamage(number active)
     end
 end
 
---- damage check
+--- use check
 e2function number entity:canDamage()
     if not IsValid(this) then
         return 0
     end
 
-    return this:CPPICanDamage(self.player) and 1 or 0
+	
+    if this:IsPlayer() then
+		return FPPBuddyCheck(self.player, this, "entitydamage") and 1 or 0
+	else
+		return this:CPPICanDamage(self.player) and 1 or 0
+	end
 end
 
 --- entity share all
