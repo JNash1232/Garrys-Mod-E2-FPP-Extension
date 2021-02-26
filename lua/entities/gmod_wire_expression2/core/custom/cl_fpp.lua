@@ -14,3 +14,4 @@ E2Helper.Descriptions["shareToolgun"] = "shares toolgun prop protection with E w
 E2Helper.Descriptions["canToolgun"] = "returns 1 if player E has shared toolgun with you or if E not a player returns 1 when E is shared with you"
 
 E2Helper.Descriptions["share"] = "shares all protection with target E where E is a player, otherwise shares all prop protection with everyone for E"
+E2Helper.Descriptions["share(e:en)"] = "shares all protection on entity with specified player"
