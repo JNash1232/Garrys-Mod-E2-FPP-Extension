@@ -3,6 +3,7 @@
     "type": "ServerContent",
     "default_changelog": "All changes can be found on https://github.com/JasonQ1232/Garrys-Mod-E2-FPP-Extension",
     "ignore": [
-        "*.git*"
+        "*.git*",
+		"[e2] falcos prop protection.jpg"
     ]
 }
