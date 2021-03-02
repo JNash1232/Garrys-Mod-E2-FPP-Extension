@@ -2,14 +2,65 @@
     -- Jason1232 & KieranFYI
 ]]
 
---- Include the fpp buddies library needed to actually add buddies
-include("fpp/client/buddies.lua")
-
 --- Register this extension, give it a name and desc and disabled by default
 E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to add people to you falcos prop protection buddies list and share individual items.")
 
 --- sets the E2 Cost
 __e2setcost(100)
+
+local function FPPBuddyCheck(ply, otherPlayer, type)
+    if not IsValid(ply) or not ply:IsPlayer() 
+        or not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
+        return false
+    end
+
+    if ply == otherPlayer then
+        return true
+    end
+
+    if not otherPlayer.Buddies then
+        return false
+    end
+
+    if not otherPlayer.Buddies[ply] then
+        return false
+    end
+
+    if otherPlayer.Buddies[ply][type] then
+        return otherPlayer.Buddies[ply][type]
+    end
+
+    return false
+end
+
+local function FPPChangeBuddy(ply, buddy, type, value)
+    if not IsValid(ply) then return end
+
+    ply.Buddies = ply.Buddies or {}
+
+    if type == "Remove" then
+        ply.Buddies[buddy] = nil
+    else
+        ply.Buddies[buddy] = ply.Buddies[buddy] or {Physgun = false, Gravgun = false, Toolgun = false, PlayerUse = false, EntityDamage = false}
+        ply.Buddies[buddy][type] = value
+    end
+
+    local CPPIBuddies = {}
+    for k, v in pairs(ply.Buddies) do if table.HasValue(v, true) then table.insert(CPPIBuddies, k) end end
+    -- Also run at player spawn because clients send their buddies through this command
+    hook.Run("CPPIFriendsChanged", ply, CPPIBuddies)
+
+    -- Update the prop protection
+    local affectedProps = {}
+    for _, v in ipairs(ents.GetAll()) do
+        local owner = v:CPPIGetOwner()
+        if owner ~= ply then continue end
+        table.insert(affectedProps, v)
+    end
+
+    FPP.recalculateCanTouch({buddy}, affectedProps)
+    FPP.RecalculateConstrainedEntities({buddy}, affectedProps)
+end
 
 local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entitydamage)
     if not IsValid(ply) or not ply:IsPlayer()
@@ -20,26 +71,27 @@ local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entityda
     if ent:IsPlayer() then
 
         if physgun == 0 and gravgun == 0 and toolgun == 0 and playeruse == 0 and entitydamage == 0 then
-            FPP.SaveBuddy(ent:SteamID(), "Remove", "remove")
+            FPPChangeBuddy(ply, ent, "Remove", true)
         else
+
             if physgun ~= nil then
-                FPP.SaveBuddy(ent:SteamID(), "Physgun", "physgun", physgun >= 1 and 1 or 0)
+                FPPChangeBuddy(ply, ent, "Physgun", physgun >= 1 and true or false)
             end
 
             if gravgun ~= nil then
-                FPP.SaveBuddy(ent:SteamID(), "Gravgun", "gravgun", gravgun >= 1 and 1 or 0)
+                FPPChangeBuddy(ply, ent, "Gravgun", gravgun >= 1 and true or false)
             end
 
             if toolgun ~= nil then
-                FPP.SaveBuddy(ent:SteamID(), "Toolgun", "toolgun", toolgun >= 1 and 1 or 0)
+                FPPChangeBuddy(ply, ent, "Toolgun", toolgun >= 1 and true or false)
             end
 
             if playeruse ~= nil then
-                FPP.SaveBuddy(ent:SteamID(), "Use", "playeruse", playeruse >= 1 and 1 or 0)
+                FPPChangeBuddy(ply, ent, "Use", playeruse >= 1 and true or false)
             end
 
             if entitydamage ~= nil then
-                FPP.SaveBuddy(ent:SteamID(), "Entity damage", "entitydamage", entitydamage >= 1 and 1 or 0)
+                FPPChangeBuddy(ply, ent, "Entity damage", entitydamage >= 1 and true or false)
             end
         end
     else
@@ -72,32 +124,6 @@ local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entityda
         FPP.recalculateCanTouch(player.GetAll(), {ent})
     end
 end
-
-local function FPPBuddyCheck(ply, otherPlayer, type)
-    if not IsValid(ply) or not ply:IsPlayer() 
-        or not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
-        return false
-    end
-
-    if ply == otherPlayer then
-        return true
-    end
-
-    if not otherPlayer.Buddies then
-        return false
-    end
-
-    if not otherPlayer.Buddies[ply] then
-        return false
-    end
-
-    if otherPlayer.Buddies[ply][type] then
-        return otherPlayer.Buddies[ply][type]
-    end
-
-    return false
-end
-
 --- physgun share
 e2function void entity:sharePhysgun(number active)
     if not IsValid(this) then
