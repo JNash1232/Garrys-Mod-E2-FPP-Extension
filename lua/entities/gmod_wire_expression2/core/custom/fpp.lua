@@ -8,6 +8,15 @@ E2Lib.RegisterExtension("fpp", false, "an extension that allows you to use e2 to
 --- sets the E2 Cost
 __e2setcost(100)
 
+--- Sets the version, remember to update this, else its useless
+local version = "1.01"
+
+
+local function Version()
+    print(version)
+end
+concommand.Add("FPPE2_Version", Version)
+
 local function FPPBuddyCheck(ply, otherPlayer, type)
     if not IsValid(ply) or not ply:IsPlayer() 
         or not IsValid(otherPlayer) or not otherPlayer:IsPlayer() then
