@@ -87,7 +87,7 @@ local function FPPShare(ply, ent, physgun, gravgun, toolgun, playeruse, entityda
             end
 
             if playeruse ~= nil then
-                FPPChangeBuddy(ply, ent, "Use", playeruse >= 1 and true or false)
+                FPPChangeBuddy(ply, ent, "PlayerUse", playeruse >= 1 and true or false)
             end
 
             if entitydamage ~= nil then
